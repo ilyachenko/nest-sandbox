@@ -1,16 +1,28 @@
 import { Injectable } from '@nestjs/common';
 import { Article, ArticleStatus } from './articles.model';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class ArticlesService {
     private articles: Article[] = [];
 
+    getArticleById(id: string): Article {
+        return this.articles.find((article: Article) => article.id === id);
+    }
+
     getAllArticles(): Article[] {
         return this.articles;
     }
 
-    getArticleById(id: string): Article {
-        return this.articles.find((article) => article.id === id);
+    addArticle(title: string, content: string): Article {
+        const articleToAdd = {
+            id: uuidv4(),
+            title,
+            content,
+            status: ArticleStatus.DRAFT,
+        };
+        this.articles = [...this.articles, articleToAdd];
+        return articleToAdd;
     }
 
     deleteArticle(id: string): void {
