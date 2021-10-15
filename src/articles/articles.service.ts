@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Article, ArticleStatus } from './articles.model';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -7,7 +7,15 @@ export class ArticlesService {
     private articles: Article[] = [];
 
     getArticleById(id: string): Article {
-        return this.articles.find((article: Article) => article.id === id);
+        const article: Article = this.articles.find(
+            (article: Article) => article.id === id,
+        );
+
+        if (!article) {
+            throw new NotFoundException(`Article ${id} not found`);
+        }
+
+        return article;
     }
 
     getAllArticles(): Article[] {
