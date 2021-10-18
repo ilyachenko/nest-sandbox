@@ -38,17 +38,17 @@ export class ArticlesController {
         return this.articlesService.deleteArticle(id);
     }
 
-    @Patch('/:id')
-    updateArticle(
-        @Param('id') id: string,
-        @Body('title') title: string,
-        @Body('content') content: string,
-    ) {
-        return this.articlesService.updateArticle(id, title, content);
-    }
+    // @Patch('/:id')
+    // updateArticle(
+    //     @Param('id') id: string,
+    //     @Body('title') title: string,
+    //     @Body('content') content: string,
+    // ) {
+    //     return this.articlesService.updateArticle(id, title, content);
+    // }
 
-    @Patch('/publish/:id')
-    publishArticle(@Param('id') id: string) {
-        return this.articlesService.publishArticle(id);
-    }
+    // @Patch('/publish/:id')
+    // publishArticle(@Param('id') id: string) {
+    //     return this.articlesService.publishArticle(id);
+    // }
 }
