@@ -7,8 +7,8 @@ import {
     Patch,
     Post,
 } from '@nestjs/common';
+import { CreateArticleInput } from './article.input';
 import { Article } from './articles.model';
-import { CreateArticleDto } from './dto/create-article.dto';
 import { ArticlesService } from './articles.service';
 
 @Controller('articles')
@@ -25,13 +25,10 @@ export class ArticlesController {
         return this.articlesService.getArticleById(id);
     }
 
-    @Post()
-    addArticle(@Body() createArticleDto: CreateArticleDto) {
-        return this.articlesService.addArticle(
-            createArticleDto.title,
-            createArticleDto.content,
-        );
-    }
+    // @Post()
+    // addArticle(@Body() createArticleInput: CreateArticleInput) {
+    //     return this.articlesService.addArticle(createArticleInput);
+    // }
 
     @Delete('/:id')
     deleteArticleById(@Param('id') id: string) {

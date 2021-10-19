@@ -1,4 +1,5 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { CreateArticleInput } from './article.input';
 import { ArticleType } from './article.type';
 import { ArticlesService } from './articles.service';
 
@@ -13,9 +14,8 @@ export class ArticleResolver {
 
     @Mutation((returns) => ArticleType)
     createArticle(
-        @Args('title') title: string,
-        @Args('content') content: string,
+        @Args('createArticleInput') createArticleInput: CreateArticleInput,
     ) {
-        return this.articleService.addArticle(title, content);
+        return this.articleService.addArticle(createArticleInput);
     }
 }

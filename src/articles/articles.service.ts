@@ -1,9 +1,10 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Article, ArticleStatus } from './articles.model';
 import { v4 as uuidv4 } from 'uuid';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ArticleEntity } from './article.entity';
 import { Repository } from 'typeorm';
+import { CreateArticleInput } from './article.input';
 
 @Injectable()
 export class ArticlesService {
@@ -13,7 +14,8 @@ export class ArticlesService {
     ) {}
     private articles: Article[] = [];
 
-    addArticle(title: string, content: string): Promise<Article> {
+    addArticle(createArticleInput: CreateArticleInput): Promise<Article> {
+        const { title, content } = createArticleInput;
         const article = this.articleRepository.create({
             id: uuidv4(),
             title,
