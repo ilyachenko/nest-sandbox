@@ -1,30 +1,30 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CreateArticleInput } from './article.input';
-import { Article } from './article.type';
+import { ArticleType } from './article.type';
 import { ArticlesService } from './articles.service';
 
-@Resolver((of) => Article)
+@Resolver((of) => ArticleType)
 export class ArticleResolver {
     constructor(private articleService: ArticlesService) {}
 
-    @Query(() => Article)
+    @Query(() => ArticleType)
     article(@Args('id') id: string) {
         return this.articleService.getArticleById(id);
     }
 
-    @Query(() => [Article])
+    @Query(() => [ArticleType])
     articles() {
         return this.articleService.articles();
     }
 
-    @Mutation(() => Article)
+    @Mutation(() => ArticleType)
     createArticle(
         @Args('createArticleInput') createArticleInput: CreateArticleInput,
     ) {
         return this.articleService.addArticle(createArticleInput);
     }
 
-    @Mutation(() => Article)
+    @Mutation(() => ArticleType)
     updateArticle(
         @Args('id') id: string,
         @Args('createArticleInput') createArticleInput: CreateArticleInput,
@@ -38,7 +38,7 @@ export class ArticleResolver {
         return !!res.affected;
     }
 
-    @Mutation(() => Article)
+    @Mutation(() => ArticleType)
     publishArticle(@Args('id') id: string) {
         return this.articleService.publishArticle(id);
     }

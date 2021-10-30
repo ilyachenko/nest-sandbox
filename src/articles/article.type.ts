@@ -1,7 +1,8 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { ArticleStatus } from './article.entity';
 
 @ObjectType('Article')
-export class Article {
+export class ArticleType {
     @Field((type) => ID)
     id: string;
 
@@ -16,9 +17,4 @@ export class Article {
 
     @Field()
     date: string;
-}
-
-export enum ArticleStatus {
-    DRAFT = 'DRAFT',
-    PUBLISHED = 'PUBLISHED',
 }

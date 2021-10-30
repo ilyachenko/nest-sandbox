@@ -1,6 +1,5 @@
 import { Column, Entity, ObjectIdColumn, PrimaryColumn } from 'typeorm';
-import { ArticleStatus } from './article.type';
-
+import { Field, ID, ObjectType } from '@nestjs/graphql';
 @Entity()
 export class ArticleEntity {
     @ObjectIdColumn()
@@ -20,4 +19,9 @@ export class ArticleEntity {
 
     @Column()
     date: string;
+}
+
+export enum ArticleStatus {
+    DRAFT = 'DRAFT',
+    PUBLISHED = 'PUBLISHED',
 }

@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { ArticleStatus } from './article.type';
 import { v4 as uuidv4 } from 'uuid';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ArticleEntity } from './article.entity';
+import { ArticleEntity, ArticleStatus } from './article.entity';
 import { Repository, DeleteResult, UpdateResult } from 'typeorm';
 import { CreateArticleInput } from './article.input';
 
