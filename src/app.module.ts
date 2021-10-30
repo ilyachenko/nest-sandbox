@@ -3,7 +3,7 @@ import { ArticlesModule } from './articles/articles.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ArticleEntity } from './articles/article.entity';
+import { Article } from './articles/article.entity';
 
 @Module({
     imports: [
@@ -12,7 +12,7 @@ import { ArticleEntity } from './articles/article.entity';
             url: 'mongodb://localhost/nest-blog',
             synchronize: true,
             useUnifiedTopology: true,
-            entities: [ArticleEntity],
+            entities: [Article],
         }),
         MongooseModule.forRoot('mongodb://localhost/nest-blog'),
         GraphQLModule.forRoot({

@@ -1,18 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ArticleEntity, ArticleStatus } from './article.entity';
+import { Article, ArticleStatus } from './article.entity';
 import { Repository, DeleteResult, UpdateResult } from 'typeorm';
 import { CreateArticleInput } from './article.input';
 
 @Injectable()
 export class ArticlesService {
     constructor(
-        @InjectRepository(ArticleEntity)
-        private articleRepository: Repository<ArticleEntity>,
+        @InjectRepository(Article)
+        private articleRepository: Repository<Article>,
     ) {}
 
-    addArticle(createArticleInput: CreateArticleInput): Promise<ArticleEntity> {
+    addArticle(createArticleInput: CreateArticleInput): Promise<Article> {
         const { title, content } = createArticleInput;
         const article = this.articleRepository.create({
             id: uuidv4(),
@@ -23,11 +23,11 @@ export class ArticlesService {
         return this.articleRepository.save(article);
     }
 
-    articles(): Promise<ArticleEntity[]> {
+    articles(): Promise<Article[]> {
         return this.articleRepository.find();
     }
 
-    async getArticleById(id: string): Promise<ArticleEntity> {
+    async getArticleById(id: string): Promise<Article> {
         return this.articleRepository.findOne({ id });
     }
 
@@ -38,7 +38,7 @@ export class ArticlesService {
     async updateArticle(
         id: string,
         createArticleInput: CreateArticleInput,
-    ): Promise<ArticleEntity> {
+    ): Promise<Article> {
         const article = await this.getArticleById(id);
         return this.articleRepository.save({
             ...article,
@@ -46,7 +46,7 @@ export class ArticlesService {
         });
     }
 
-    async publishArticle(id: string): Promise<ArticleEntity> {
+    async publishArticle(id: string): Promise<Article> {
         const article = await this.getArticleById(id);
         return this.articleRepository.save({
             ...article,
