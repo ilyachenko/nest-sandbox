@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { Article, ArticleStatus } from './articles.model';
+import { ArticleStatus } from './article.type';
 import { v4 as uuidv4 } from 'uuid';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ArticleEntity } from './article.entity';
-import { Repository } from 'typeorm';
+import { Repository, DeleteResult, UpdateResult } from 'typeorm';
 import { CreateArticleInput } from './article.input';
 
 @Injectable()
@@ -12,9 +12,8 @@ export class ArticlesService {
         @InjectRepository(ArticleEntity)
         private articleRepository: Repository<ArticleEntity>,
     ) {}
-    private articles: Article[] = [];
 
-    addArticle(createArticleInput: CreateArticleInput): Promise<Article> {
+    addArticle(createArticleInput: CreateArticleInput): Promise<ArticleEntity> {
         const { title, content } = createArticleInput;
         const article = this.articleRepository.create({
             id: uuidv4(),
@@ -25,29 +24,35 @@ export class ArticlesService {
         return this.articleRepository.save(article);
     }
 
-    async getArticleById(id: string): Promise<Article> {
+    articles(): Promise<ArticleEntity[]> {
+        return this.articleRepository.find();
+    }
+
+    async getArticleById(id: string): Promise<ArticleEntity> {
         return this.articleRepository.findOne({ id });
     }
 
-    getAllArticles(): Article[] {
-        return this.articles;
+    async deleteArticle(id: string): Promise<DeleteResult> {
+        return this.articleRepository.delete({ id });
     }
 
-    deleteArticle(id: string): void {
-        this.articles = this.articles.filter((article) => article.id !== id);
+    async updateArticle(
+        id: string,
+        createArticleInput: CreateArticleInput,
+    ): Promise<ArticleEntity> {
+        const article = await this.getArticleById(id);
+        return this.articleRepository.save({
+            ...article,
+            ...createArticleInput,
+        });
     }
 
-    // updateArticle(id: string, title: string, content: string): Article {
-    //     const article = this.getArticleById(id);
-    //     article.title = title;
-    //     article.content = content;
-    //     article.status = ArticleStatus.DRAFT;
-    //     return article;
-    // }
-
-    // publishArticle(id: string): Article {
-    //     const article = this.getArticleById(id);
-    //     article.status = ArticleStatus.PUBLISHED;
-    //     return article;
-    // }
+    async publishArticle(id: string): Promise<ArticleEntity> {
+        const article = await this.getArticleById(id);
+        return this.articleRepository.save({
+            ...article,
+            status: ArticleStatus.PUBLISHED,
+        });
+        return article;
+    }
 }
