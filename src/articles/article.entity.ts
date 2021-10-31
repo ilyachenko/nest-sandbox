@@ -24,7 +24,7 @@ export class Article {
 
     @Field()
     @Column()
-    date: string;
+    userId: string;
 }
 
 export enum ArticleStatus {

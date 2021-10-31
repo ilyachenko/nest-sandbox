@@ -4,6 +4,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Article } from './articles/article.entity';
+import { UserModule } from './user/user.module';
+import { User } from './user/entities/user.entity';
 
 @Module({
     imports: [
@@ -12,13 +14,14 @@ import { Article } from './articles/article.entity';
             url: 'mongodb://localhost/nest-blog',
             synchronize: true,
             useUnifiedTopology: true,
-            entities: [Article],
+            entities: [Article, User],
         }),
         MongooseModule.forRoot('mongodb://localhost/nest-blog'),
         GraphQLModule.forRoot({
             autoSchemaFile: true,
         }),
         ArticlesModule,
+        UserModule,
     ],
     controllers: [],
     providers: [],

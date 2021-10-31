@@ -8,4 +8,8 @@ export class CreateArticleInput {
 
     @Field()
     content: string;
+
+    @Field()
+    @IsNotEmpty()
+    userId: string;
 }

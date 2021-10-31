@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Article, ArticleStatus } from './article.entity';
-import { Repository, DeleteResult, UpdateResult } from 'typeorm';
+import { Repository, DeleteResult } from 'typeorm';
 import { CreateArticleInput } from './article.input';
 
 @Injectable()
@@ -13,11 +13,12 @@ export class ArticlesService {
     ) {}
 
     addArticle(createArticleInput: CreateArticleInput): Promise<Article> {
-        const { title, content } = createArticleInput;
+        const { title, content, userId } = createArticleInput;
         const article = this.articleRepository.create({
             id: uuidv4(),
             title,
             content,
+            userId,
             status: ArticleStatus.DRAFT,
         });
         return this.articleRepository.save(article);

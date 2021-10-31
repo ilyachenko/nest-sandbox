@@ -1,11 +1,23 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import {
+    Args,
+    Mutation,
+    Parent,
+    Query,
+    ResolveField,
+    Resolver,
+} from '@nestjs/graphql';
 import { CreateArticleInput } from './article.input';
 import { Article } from './article.entity';
 import { ArticlesService } from './articles.service';
+import { UserService } from '../user/user.service';
+import { User } from 'src/user/entities/user.entity';
 
 @Resolver((of) => Article)
 export class ArticleResolver {
-    constructor(private articleService: ArticlesService) {}
+    constructor(
+        private articleService: ArticlesService,
+        private userService: UserService,
+    ) {}
 
     @Query(() => Article)
     article(@Args('id') id: string) {
@@ -22,6 +34,11 @@ export class ArticleResolver {
         @Args('createArticleInput') createArticleInput: CreateArticleInput,
     ) {
         return this.articleService.addArticle(createArticleInput);
+    }
+
+    @ResolveField('user', () => User)
+    async user(@Parent() article: Article) {
+        return this.userService.findOne(article.userId);
     }
 
     @Mutation(() => Article)
